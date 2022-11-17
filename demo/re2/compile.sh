@@ -5,7 +5,7 @@ LLVMLINK=llvm-link-10
 OPT=opt-10
 CXXFLAGS='-g -flto'
 
-[[ -d repo ]] || git clone https://github.com/google/re2.git repo
+[[ -d repo ]] || git clone git@github.com:google/re2.git repo
 mkdir -p repo/bitcode
 cd repo
 make clean
@@ -18,6 +18,6 @@ ar x ../obj/libre2.a
 "$LLVMLINK" *.o -o combined.bc
 "$OPT" -load=$VISFUZZ_BUILD/libVisFuzz.so -visfuzz -fvisfuzz-export=static.json \
        combined.bc -o instru.bc
-"$CLANGPP" -g -fuse-ld=lld instru.bc $VISFUZZ_BUILD/libVisFuzzDriver.a -pthread -o app
-cp {app,static.json} ..
-
+"$CLANGPP" -g -fuse-ld=lld-12 instru.bc $VISFUZZ_BUILD/libVisFuzzDriver.a -pthread -o app
+cp ./app ../
+cp ./static.json ../
